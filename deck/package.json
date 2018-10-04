@@ -1,0 +1,17 @@
+{
+  "name": "deck",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "mdx-deck deck.mdx",
+    "build": "mdx-deck build deck.mdx",
+    "pdf": "mdx-deck pdf deck.mdx"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mdx-deck": "^1.7.7",
+    "react-syntax-highlighter": "^8.0.1",
+    "remark-highlight.js": "^5.0.0"
+  }
+}

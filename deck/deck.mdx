@@ -1,0 +1,108 @@
+export { default as theme } from './theme'
+import { Invert } from 'mdx-deck/layouts'
+
+export default Invert
+
+# Advanced React Patterns (v2)
+Higher Order Component, Render Props, Compound Component
+
+---
+# Introduction & Why
+
+```jsx
+<Speaker 
+    name="Malcolm"
+    role="Frontend Engineer"
+    company="TBD"
+    isHappy
+    usedToLove="JQuery"
+    loves={['React', 'Typescript', 'Redux', 'SASS', 'Nasi Lemak', 'Coffee']}
+    hates={[
+        'React Native', // 'cos I suck at it
+        'Angular',  // refer to comment above 
+        'Wine'
+    ]}
+    twitter="@Malcolm_Kee"
+    email="malcolm.keeweesiong@gmail.com"
+    canBeFoundAt="malcolmkee.com"
+/>
+```
+---
+
+# Composition of UI
+
+```jsx
+const List = ({ title, children }) => (
+    <div className="list">
+        <h1>{title}</h1>
+        {children}
+    </div>
+);
+
+const ListItem = ({ text }) => (
+    <div>
+        {text && <p><{text}/p>} 
+    </div>
+);
+
+<List title="Hobbies">
+    <ListItem text="Reading" />
+    <ListItem text="Eating" />
+    <ListItem text="Coding" />
+</List>
+```
+---
+
+# Composition of State/Behavior ?
+
+---
+
+- ~~React Mixin~~
+- Render Props
+- Higher-Order Component
+- Compound Component (brief)
+
+---
+
+Render Props (React's inversion of control)
+
+```jsx
+const RoutedComponent = props =>
+    <Route
+        path="/malcolm"
+        render={routeProps => routeProps.match && (<div>Child</div>)}
+    />
+```
+
+---
+
+Higher Order Component (React's decorator)
+
+```js
+const EnhancedComponent = higherOrderComponent(WrappedComponent);
+```
+
+```js
+// definition
+const enhance = (Component) => {
+
+    const EnhancedComponent = doSomething(Component);
+
+    return EnhancedComponent;
+}
+
+// usage
+const EnhancedList = enhance(List);
+```
+
+---
+
+Compound Component 
+
+```jsx
+<select>
+    <option value="1">One</option>
+    <option value="2">Two</option>
+    <option value="3">Three</option>
+</select>
+```
