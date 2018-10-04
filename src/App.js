@@ -52,60 +52,76 @@ class NumberStepper extends React.Component {
   };
 }
 
-class NumberControl extends React.Component {
+const getComponentName = Component => Component.displayName || Component.name || 'Component';
+
+const withNumberStepper = (Component, initialCount = 0) => {
+  class WrappedComponent extends React.Component {
+    render() {
+      const { initialCount: propsInitialCount, onChange, ...restProps } = this.props;
+      return (
+        <NumberStepper initialCount={propsInitialCount || initialCount} onChange={onChange}>
+          {stepperProps => <Component {...stepperProps} {...restProps} />}
+        </NumberStepper>
+      );
+    }
+  }
+
+  WrappedComponent.displayName = `withNumberStepper(${getComponentName(Component)})`;
+
+  return WrappedComponent;
+};
+
+class NumberControlContainer extends React.Component {
   render() {
     const props = this.props;
     return (
-      <NumberStepper initialCount={props.initialCount} onChange={props.onChange}>
-        {({ currentNumber, increment, decrement }) => (
-          <div>
-            <button onClick={decrement}>-</button>
-            <span onClick={props.onClick}> {currentNumber} </span>
-            <button onClick={increment}>+</button>
-          </div>
-        )}
-      </NumberStepper>
+      <div>
+        <button onClick={props.decrement}>-</button>
+        <span onClick={props.onClick}> {props.currentNumber} </span>
+        <button onClick={props.increment}>+</button>
+      </div>
     );
   }
 }
 
-class MultiStepForm extends React.Component {
+const NumberControl = withNumberStepper(NumberControlContainer);
+
+class MultiStepFormContainer extends React.Component {
   render() {
+    const props = this.props;
     return (
-      <NumberStepper initialCount={1}>
-        {({ currentNumber, increment, decrement }) => (
+      <div>
+        {props.currentNumber === 1 && (
           <div>
-            {currentNumber === 1 && (
-              <div>
-                Step 1
-                <div>
-                  <button onClick={increment}>Next</button>
-                </div>
-              </div>
-            )}
-            {currentNumber === 2 && (
-              <div>
-                Step 2
-                <div>
-                  <button onClick={decrement}>Back</button>
-                  <button onClick={increment}>Next</button>
-                </div>
-              </div>
-            )}
-            {currentNumber === 3 && (
-              <div>
-                Step 3
-                <div>
-                  <button onClick={decrement}>Back</button>
-                  <button onClick={this.props.onSubmit}>Finish</button>
-                </div>
-              </div>
-            )}
+            Step 1
+            <div>
+              <button onClick={props.increment}>Next</button>
+            </div>
           </div>
         )}
-      </NumberStepper>
+        {props.currentNumber === 2 && (
+          <div>
+            Step 2
+            <div>
+              <button onClick={props.decrement}>Back</button>
+              <button onClick={props.increment}>Next</button>
+            </div>
+          </div>
+        )}
+        {props.currentNumber === 3 && (
+          <div>
+            Step 3
+            <div>
+              <button onClick={props.decrement}>Back</button>
+              <button onClick={props.onSubmit}>Finish</button>
+            </div>
+          </div>
+        )}
+      </div>
     );
   }
 }
+
+const MultiStepForm = withNumberStepper(MultiStepFormContainer, 1);
 
 export default App;
