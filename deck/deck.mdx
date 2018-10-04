@@ -1,13 +1,20 @@
 export { default as theme } from './theme'
+import { Head } from "mdx-deck";
 import { Invert } from 'mdx-deck/layouts'
+
+<Head>
+    <title>React Advanced Patterns</title>
+    <meta name="description" content="Slide for React Advanced Patterns, given by Malcolm Kee in KLJS" />
+    <meta name="keywords" content="Malcolm Kee, ReactJS, React Advanced Patterns" />
+</Head>
 
 export default Invert
 
-# Advanced React Patterns (v2)
+# Advanced React Patterns
 Higher Order Component, Render Props, Compound Component
 
 ---
-# Introduction & Why
+## Introduction & Why
 
 ```jsx
 <Speaker 
@@ -29,7 +36,7 @@ Higher Order Component, Render Props, Compound Component
 ```
 ---
 
-# Composition of UI
+## Composition of UI
 
 ```jsx
 const List = ({ title, children }) => (
@@ -53,7 +60,7 @@ const ListItem = ({ text }) => (
 ```
 ---
 
-# Composition of State/Behavior ?
+## Composition of State/Behavior ?
 
 ---
 
@@ -76,7 +83,7 @@ const RoutedComponent = props =>
 
 ---
 
-Higher Order Component (React's decorator)
+## Higher Order Component (React's decorator)
 
 ```js
 const EnhancedComponent = higherOrderComponent(WrappedComponent);
@@ -97,7 +104,7 @@ const EnhancedList = enhance(List);
 
 ---
 
-Compound Component 
+## Compound Component 
 
 ```jsx
 <select>
@@ -106,3 +113,16 @@ Compound Component
     <option value="3">Three</option>
 </select>
 ```
+
+---
+
+|Patterns           |Description                            |Used when                              |
+|-------------------|---------------------------------------|---------------------------------------|
+|Render Props       |Delegates UI to component user         |Reuse functionality                    |
+|HOC                |Injects props to wrapped component     |Same as above, with different API      |
+|Compound Component |Parent injects props to child component|Multiple components that works together|
+
+---
+export default Invert
+
+Questions & Maybe Answers
