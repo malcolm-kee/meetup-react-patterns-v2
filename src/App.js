@@ -20,7 +20,7 @@ class App extends Component {
   }
 }
 
-class NumberControl extends React.Component {
+class NumberStepper extends React.Component {
   state = {
     countNumber: this.props.initialCount
   };
@@ -38,13 +38,11 @@ class NumberControl extends React.Component {
     );
 
   render() {
-    return (
-      <div>
-        <button onClick={this.handleDecrement}>-</button>
-        <span onClick={this.props.onClick}> {this.state.countNumber} </span>
-        <button onClick={this.handleIncrement}>+</button>
-      </div>
-    );
+    return this.props.children({
+      currentNumber: this.state.countNumber,
+      decrement: this.handleDecrement,
+      increment: this.handleIncrement
+    });
   }
 
   // set default count to 0
@@ -54,45 +52,58 @@ class NumberControl extends React.Component {
   };
 }
 
+class NumberControl extends React.Component {
+  render() {
+    const props = this.props;
+    return (
+      <NumberStepper initialCount={props.initialCount} onChange={props.onChange}>
+        {({ currentNumber, increment, decrement }) => (
+          <div>
+            <button onClick={decrement}>-</button>
+            <span onClick={props.onClick}> {currentNumber} </span>
+            <button onClick={increment}>+</button>
+          </div>
+        )}
+      </NumberStepper>
+    );
+  }
+}
+
 class MultiStepForm extends React.Component {
-  state = {
-    stepNumber: 1
-  };
-
-  handleIncrement = () => this.setState(prevState => ({ stepNumber: prevState.stepNumber + 1 }));
-
-  handleDecrement = () => this.setState(prevState => ({ stepNumber: prevState.stepNumber - 1 }));
-
   render() {
     return (
-      <div>
-        {this.state.stepNumber === 1 && (
+      <NumberStepper initialCount={1}>
+        {({ currentNumber, increment, decrement }) => (
           <div>
-            Step 1
-            <div>
-              <button onClick={this.handleIncrement}>Next</button>
-            </div>
+            {currentNumber === 1 && (
+              <div>
+                Step 1
+                <div>
+                  <button onClick={increment}>Next</button>
+                </div>
+              </div>
+            )}
+            {currentNumber === 2 && (
+              <div>
+                Step 2
+                <div>
+                  <button onClick={decrement}>Back</button>
+                  <button onClick={increment}>Next</button>
+                </div>
+              </div>
+            )}
+            {currentNumber === 3 && (
+              <div>
+                Step 3
+                <div>
+                  <button onClick={decrement}>Back</button>
+                  <button onClick={this.props.onSubmit}>Finish</button>
+                </div>
+              </div>
+            )}
           </div>
         )}
-        {this.state.stepNumber === 2 && (
-          <div>
-            Step 2
-            <div>
-              <button onClick={this.handleDecrement}>Back</button>
-              <button onClick={this.handleIncrement}>Next</button>
-            </div>
-          </div>
-        )}
-        {this.state.stepNumber === 3 && (
-          <div>
-            Step 3
-            <div>
-              <button onClick={this.handleDecrement}>Back</button>
-              <button onClick={this.props.onSubmit}>Finish</button>
-            </div>
-          </div>
-        )}
-      </div>
+      </NumberStepper>
     );
   }
 }
