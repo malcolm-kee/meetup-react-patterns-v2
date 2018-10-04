@@ -14,7 +14,7 @@ class App extends Component {
           onChange={count => console.info({ count })}
           onClick={() => console.info('You click the number!')}
         />
-        <MultiStepForm onSubmit={() => console.info('You submitted!')} />
+        <MultiStepForm />
       </div>
     );
   }
@@ -86,42 +86,52 @@ class NumberControlContainer extends React.Component {
 
 const NumberControl = withNumberStepper(NumberControlContainer);
 
-class MultiStepFormContainer extends React.Component {
+class Wizard extends React.Component {
   render() {
     const props = this.props;
     return (
-      <div>
-        {props.currentNumber === 1 && (
-          <div>
-            Step 1
-            <div>
-              <button onClick={props.increment}>Next</button>
-            </div>
-          </div>
-        )}
-        {props.currentNumber === 2 && (
-          <div>
-            Step 2
-            <div>
-              <button onClick={props.decrement}>Back</button>
-              <button onClick={props.increment}>Next</button>
-            </div>
-          </div>
-        )}
-        {props.currentNumber === 3 && (
-          <div>
-            Step 3
-            <div>
-              <button onClick={props.decrement}>Back</button>
-              <button onClick={props.onSubmit}>Finish</button>
-            </div>
-          </div>
-        )}
-      </div>
+      <NumberStepper initialCount={1}>
+        {({ currentNumber, increment, decrement }) =>
+          React.Children.map(props.children, child =>
+            React.cloneElement(child, {
+              currentStep: currentNumber,
+              next: increment,
+              prev: decrement
+            })
+          )
+        }
+      </NumberStepper>
     );
   }
 }
 
-const MultiStepForm = withNumberStepper(MultiStepFormContainer, 1);
+const Step = ({ showNext, showPrev, stepNum, children, currentStep, next, prev }) =>
+  stepNum === currentStep && (
+    <div>
+      {children}
+      <div>
+        {showPrev && <button onClick={prev}>Back</button>}
+        {showNext && <button onClick={next}>Next</button>}
+      </div>
+    </div>
+  );
+
+class MultiStepForm extends React.Component {
+  render() {
+    return (
+      <Wizard>
+        <Step stepNum={1} showNext>
+          Step 1
+        </Step>
+        <Step stepNum={2} showNext showPrev>
+          Step 2
+        </Step>
+        <Step stepNum={3} showPrev>
+          Step 3
+        </Step>
+      </Wizard>
+    );
+  }
+}
 
 export default App;
