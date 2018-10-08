@@ -14,7 +14,7 @@ class App extends Component {
           onChange={count => console.info({ count })}
           onClick={() => console.info('You click the number!')}
         />
-        <MultiStepForm onSubmit={() => console.info('You submitted!')} />
+        <MultiStepForm />
       </div>
     );
   }
@@ -97,7 +97,6 @@ class MultiStepForm extends React.Component {
                 Step 3
                 <div>
                   <button onClick={decrement}>Back</button>
-                  <button onClick={this.props.onSubmit}>Finish</button>
                 </div>
               </div>
             )}
