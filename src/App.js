@@ -88,7 +88,6 @@ class MultiStepForm extends React.Component {
             Step 3
             <div>
               <button onClick={this.handleDecrement}>Back</button>
-              <button onClick={this.props.onSubmit}>Finish</button>
             </div>
           </div>
         )}
