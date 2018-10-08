@@ -14,7 +14,7 @@ class App extends Component {
           onChange={count => console.info({ count })}
           onClick={() => console.info('You click the number!')}
         />
-        <MultiStepForm onSubmit={() => console.info('You submitted!')} />
+        <MultiStepForm />
       </div>
     );
   }
